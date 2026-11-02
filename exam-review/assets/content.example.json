@@ -1,0 +1,39 @@
+{
+  "course": "示例课程",
+  "exam_type": "笔试",
+  "chapters": [
+    {
+      "id": "ch1",
+      "title": "示例章节",
+      "knowledge": [
+        {
+          "heading": "矢量",
+          "body": "速度是矢量 $\\vec{v}$。平均量写作 $\\bar{w}$。角度用 $\\alpha$。\n\n公式放在 JSON 里，不要写进 Python 字符串。"
+        }
+      ],
+      "formulas": [
+        {
+          "name": "位移",
+          "expr": "$x = 3t - 5t^3 + 6$",
+          "note": "质量差的提取结果按知识点重写，不要硬翻乱码。"
+        },
+        {
+          "name": "动能",
+          "expr": "$\\frac{1}{2}mv^{2}$",
+          "note": ""
+        }
+      ],
+      "traps": [
+        "普通字符串里的反斜杠会把公式弄坏，所以公式只放在 JSON。"
+      ],
+      "past_papers": [
+        {
+          "q": "已知 $x = 3t - 5t^3 + 6$，求 $t = 1$ 时的 $x$。",
+          "a": "$x = 4$",
+          "analysis": "把 $t = 1$ 代入。"
+        }
+      ],
+      "practice_file": "practice_ch1.example.json"
+    }
+  ]
+}

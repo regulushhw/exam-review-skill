@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "exam-review/assets/schema.json",
+  "title": "Exam review content",
+  "description": "Content JSON filled by scripts/assemble.py. Practice questions may be inline or in a practice_chN.json file. LaTeX is plain text inside JSON strings.",
+  "type": "object",
+  "required": ["course", "chapters"],
+  "additionalProperties": false,
+  "properties": {
+    "course": {
+      "type": "string"
+    },
+    "exam_type": {
+      "type": "string"
+    },
+    "chapters": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "title"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "knowledge": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["heading", "body"],
+              "additionalProperties": false,
+              "properties": {
+                "heading": {"type": "string"},
+                "body": {"type": "string"}
+              }
+            }
+          },
+          "formulas": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "expr"],
+              "additionalProperties": false,
+              "properties": {
+                "name": {"type": "string"},
+                "expr": {"type": "string", "description": "LaTeX, for example $x = 3t - 5t^3 + 6$"},
+                "note": {"type": "string"}
+              }
+            }
+          },
+          "traps": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "past_papers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["q", "a"],
+              "additionalProperties": false,
+              "properties": {
+                "q": {"type": "string"},
+                "a": {"type": "string"},
+                "analysis": {"type": "string"}
+              }
+            }
+          },
+          "practice_file": {
+            "type": "string",
+            "description": "Path to a practice JSON array, relative to this file. If practice_file and practice are both set, practice_file is the one assemble.py reads."
+          },
+          "practice": {
+            "$ref": "#/$defs/practice"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "practice": {
+      "type": "array",
+      "description": "Same shape as practice_chN.json.",
+      "items": {
+        "type": "object",
+        "required": ["q", "a"],
+        "additionalProperties": false,
+        "properties": {
+          "q": {"type": "string"},
+          "a": {"type": "string"},
+          "difficulty": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "1 to 4 stars, easy to hard."
+          }
+        }
+      }
+    }
+  }
+}

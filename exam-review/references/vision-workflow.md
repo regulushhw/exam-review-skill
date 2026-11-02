@@ -17,21 +17,21 @@ PDF 来源？
                     └── < 500 字符    → 切换视觉分析
 ```
 
-提取脚本自带字符数检查，低于 500 字符的 PDF 自动标出，立刻换方法，不要用领域知识把缺口补上。
+字符数检查用技能里的 `scripts/extract_and_check.py`，不要另写。低于 500 字符的 PDF 会在 `quality_report.json` 里标成 `likely_image_pdf`，立刻换方法，不要用领域知识把缺口补上。
 
 ## 完整流程
 
-### Step 1：安装 PyMuPDF
+### Step 1：安装依赖
 
 ```bash
-pip install pymupdf
+pip install -r <本技能目录>/scripts/requirements.txt
 ```
 
-包名是 `pymupdf`，导入时用 `import fitz`。优先用 PyMuPDF，比 pdf2image 更轻量。
+转图片用的包名是 `pymupdf`，导入时用 `import fitz`。优先用 PyMuPDF，比 pdf2image 更轻量。不要改用 pdf2image 再写一个转换脚本。
 
 ### Step 2：PDF 转图片
 
-150 dpi 够用，清晰度和速度比较均衡。
+调用 `scripts/pdf_to_images.py`。默认 150 dpi。每个 PDF 一个文件夹：`pdf_images/<文件名>/page_001.png`。清单写在 `pdf_images/manifest.json`（UTF-8）。不要把下面的示例再抄成新文件；脚本内部就是这样做的。
 
 ```python
 import fitz
@@ -41,7 +41,11 @@ for i, page in enumerate(doc):
     pix.save(f"pdf_images/文件/page_{i+1:03d}.png")
 ```
 
-图片先放在工作区的 `pdf_images/`。HTML 生成完立即删除这个目录。
+```bash
+python <本技能目录>/scripts/pdf_to_images.py 文件.pdf --out pdf_images
+```
+
+图片先放在工作区的 `pdf_images/`。HTML 生成完用 `scripts/cleanup.py` 删除这个目录。
 
 ### Step 3：视觉分析提取内容
 

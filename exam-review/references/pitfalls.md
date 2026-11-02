@@ -23,9 +23,9 @@
 
 **3. JSON 是 LaTeX 内容的最佳载体**
 
-- 做法：含 LaTeX 的数据存 JSON → 脚本读取 JSON 拼装 HTML
+- 做法：含 LaTeX 的数据存 JSON → `scripts/assemble.py` 读取 JSON 拼装 HTML
 - 好处：JSON 里 `$LaTeX$` 是纯文本，不存在转义问题
-- 结构见 [`architecture.md`](architecture.md)
+- 结构见 [`architecture.md`](architecture.md)。不要为当前课程再写一个拼装脚本（v5.1）
 
 **4. PDF 提取的 LaTeX 公式是垃圾**
 
@@ -47,7 +47,7 @@
 **1. PDF 提取质量差**
 
 - 解决：pdfplumber → OCR → 视觉模型，逐步升级
-- 预防：提取脚本自动检查字符数，< 500 字符自动标记
+- 预防：`scripts/extract_and_check.py` 自动检查字符数，< 500 字符自动标记（v5.1，不要另写提取脚本）
 - 决策树见 [`vision-workflow.md`](vision-workflow.md)
 
 **2. 旧版 .doc 读不了**
@@ -101,7 +101,7 @@
 
 **7. 全量重写风险大**
 
-- 解决：局部替换，用 div 嵌套深度计数器定位匹配闭合标签（代码见 [`architecture.md`](architecture.md)）
+- 解决：局部替换，用 div 嵌套深度计数器定位匹配闭合标签（`scripts/assemble.py --patch`，代码见 [`architecture.md`](architecture.md)）
 
 ## 文件管理类
 
@@ -111,7 +111,7 @@
 
 **2. 忘记删除临时文件**
 
-- 解决：生成完立即删除 `extracted/`、`pdf_images/`、临时脚本
+- 解决：生成完立即用 `scripts/cleanup.py` 删除 `extracted/`、`pdf_images/`、临时脚本（v5.1）
 
 **3. 文件命名不规范**
 
